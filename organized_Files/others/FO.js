@@ -101,6 +101,7 @@ function organizeHelper(src, dest) {
         {
            let fileCategory = getCategory(childName[i]) 
            console.log(childName[i] + ' belongs to ' + fileCategory)
+           sendFiles(childAddress, dest, fileCategory )
         }
              
     }
@@ -130,5 +131,15 @@ function getCategory(Filename)
 
 function sendFiles(srcFilePath, dest, fileCategory) 
 {
+    let catPath = path.join(dest, fileCategory)
+    if (fs.existsSync(catPath)==false) {
+        fs.mkdirSync(catPath)
+    }
+
+    let Filename = path.basename(srcFilePath)
+    let destFilePath = path.join(catPath, Filename)
     
+    fs.copyFileSync(srcFilePath, destFilePath)
+    fs.unlinkSync(srcFilePath)
+    console.log('organized')
 }
